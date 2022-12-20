@@ -76,6 +76,12 @@ authorsRouter.get("/:authorId", (req, res) => {
 
   // 3. Find the specified user in the array
   const author = authorsArray.find(user => user.id === authorId)
+  // check if the email already exists
+    const emailExists = author.find((a) => a.email ===email);
+      if (emailExists)
+        return res.status(400).json({
+            error: "Email already exists",
+        });
 
   // 4. Send it back as a response
   res.send(author)
