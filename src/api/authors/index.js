@@ -72,16 +72,12 @@ authorsRouter.get("/:authorId", (req, res) => {
   console.log("AUTHOR ID: ", authorId)
 
   // 2. Read the file --> obtaining an array
-  const authorsArray = JSON.parse(fs.readFileSync(usersJSONPath))
+  const authorsArray = JSON.parse(fs.readFileSync(authorsJSONPath))
 
   // 3. Find the specified user in the array
-  const author = authorsArray.find(user => user.id === authorId)
+  const author = authorsArray.find(author => author.id === authorId)
   // check if the email already exists
-    const emailExists = author.find((a) => a.email ===email);
-      if (emailExists)
-        return res.status(400).json({
-            error: "Email already exists",
-        });
+   
 
   // 4. Send it back as a response
   res.send(author)
@@ -95,11 +91,11 @@ authorsRouter.put("/:authorId", (req, res) => {
   // 2. Modify the specified user by merging previous properties with the properties coming from req.body
   const index = authorsArray.findIndex(author => author.id === req.params.authorId)
   const oldAuthor = authorsArray[index]
-  const updatedAuthor = { ...oldUser, ...req.body, updatedAt: new Date() }
+  const updatedAuthor = { ...oldAuthor, ...req.body, updatedAt: new Date() }
   authorsArray[index] = updatedAuthor
 
   // 3. Save the modified array back to disk
-  fs.writeFileSync(authorsSONPath, JSON.stringify(authorsArray))
+  fs.writeFileSync(authorsJSONPath, JSON.stringify(authorsArray))
 
   // 4. Send back a proper response
   res.send(updatedAuthor)
